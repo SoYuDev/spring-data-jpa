@@ -18,7 +18,18 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String nombre;
+    // Por default el varchar es 255, podemos cambiarlo
+    @Column(length = 512)
+    private String nombreProducto;
 
-    private double precio;
+    // El tipo TEXT no tienen límite de caracteres
+    @Column(columnDefinition = "TEXT")
+    private String descripcion;
+
+    @Column(name = "precio")
+    private double precioVenta;
+
+    // Cuando ejecutamos Hibernate se encarga de hacer la siguiente sentencia SQL que puede verse por consola:
+    // Hibernate: create table producto (precio float(53),
+    // id bigint not null, nombre_producto varchar(512), descripcion TEXT, primary key (id))
 }

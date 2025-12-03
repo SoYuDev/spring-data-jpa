@@ -9,9 +9,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 //@Table(name = "productos") Podemos modificar el nombre de la tabla, hay algunas palabras reservadas como
 // "Users" en PostgresSQL con las que si nuestra clase Java se llama igual, debemos de cambiar el nombre.

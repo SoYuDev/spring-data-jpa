@@ -18,7 +18,9 @@ import java.util.Objects;
 public class Producto {
     // La estrategia AUTO elige la estrategia en función del gestor de DB y el tipo de dato que sea la PK.
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    // También podemos establecer nosotros mismos como va a ir incrementando la secuencia de la PK
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_generator")
+    @SequenceGenerator(name = "product_generator", sequenceName = "producto_seq", allocationSize = 1)
     private Long id;
 
     // Por default el varchar es 255, podemos cambiarlo

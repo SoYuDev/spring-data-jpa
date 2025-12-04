@@ -1,17 +1,23 @@
 package com.luis.springdata;
 
+import com.luis.springdata.model.Categoria;
 import com.luis.springdata.model.Producto;
+import com.luis.springdata.repository.CategoriaRepository;
 import com.luis.springdata.repository.ProductoRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class MainDeMentira {
 
     private final ProductoRepository productoRepository;
+    private final CategoriaRepository categoriaRepository;
 
-    public MainDeMentira(ProductoRepository productoRepository) {
+    public MainDeMentira(ProductoRepository productoRepository, CategoriaRepository categoriaRepository) {
         this.productoRepository = productoRepository;
+        this.categoriaRepository = categoriaRepository;
     }
 
     // Se ejecuta cuando se instancia el Bean
@@ -33,5 +39,38 @@ public class MainDeMentira {
                         System.out::println,
                         () -> System.out.println("No existe producto con id 2")
                 );
+
+        // Añadir una categoria y un producto con lo métodos helper para buenas prácticas
+        Categoria c = Categoria.builder()
+                .nombre("Coches")
+                .build();
+
+        categoriaRepository.save(c);
+
+        Producto coche = Producto.builder()
+                .nombreProducto("Audi")
+                .descripcion("Un coche muy rápido")
+                .precioVenta(100000)
+                .build();
+
+        c.addProducto(coche);
+
+        productoRepository.save(coche);
+
+        // Obtenemos los productos que tiene cada ID
+        categoriaRepository.findById(1L).ifPresentOrElse(
+                categoria -> {
+                    System.out.println("ID:%d - %s: %s".formatted(
+                            categoria.getId(),
+                            categoria.getNombre(),
+                            categoria.getProductos()
+                                    .stream()
+                                    .map(producto -> producto.getNombreProducto())
+                                    .collect(Collectors.joining(", "))
+                    ));
+
+                },
+                () -> System.out.println("No existe una categoria con ID 1")
+        );
     }
 }

@@ -26,12 +26,17 @@ public class Categoria {
 
     private String nombre;
 
-    @OneToMany(mappedBy = "categoria"/*, fetch = FetchType.EAGER*/)
-    @Builder.Default
-    @ToString.Exclude
+    // La buena práctica es tener en ambas clases que establecen la relación sus anotaciones correspondientes
+    // @ManyToOne en Producto y @OneToMany en Categoria
+    // El valor que debe de tener mappedBy es el nombre del atributo que tenemos en Producto para la asociación
+    //EAGER carga todas las entidades relacionadas, cargará los productos de la categoria seleccionada
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.EAGER)
+    @Builder.Default // Como tenemos @Builder en la Clase, Builder.Default hace que si instanciamos
+    // Un objeto con el metodo Builder sin especificar .productos se genere por default.
+    @ToString.Exclude // Excluye este atributo del metodo toString() MUY IMPORTANTE PARA EVITAR RECURSIÓN INFINITA
     private List<Producto> productos = new ArrayList<>();
 
-    // Métodos helper
+    // Métodos helper -- Recomendados para buenas prácticas de JPA
 
     public Categoria addProducto(Producto p) {
         productos.add(p);

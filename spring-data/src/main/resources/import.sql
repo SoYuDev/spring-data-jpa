@@ -5,7 +5,7 @@ INSERT INTO categoria (id, nombre) VALUES (3, 'Hogar y Electrodomésticos');
 INSERT INTO categoria (id, nombre) VALUES (4, 'Accesorios y Estilo de Vida');
 INSERT INTO categoria (id, nombre) VALUES (5, 'Papelería y Oficina');
 
-ALTER SEQUENCE IF EXISTS categoria_seq START WITH 6;
+ALTER SEQUENCE IF EXISTS categoria_seq RESTART WITH 6;
 
 INSERT INTO producto (id, precio, nombre_producto, descripcion, categoria_id) VALUES (nextval('producto_seq'), 599.99, 'Smartphone Samsung Galaxy S23', 'Teléfono móvil con pantalla AMOLED de 6.1 pulgadas y 256 GB de almacenamiento.', 1);
 INSERT INTO producto (id, precio, nombre_producto, descripcion, categoria_id) VALUES (nextval('producto_seq'), 1299.99, 'Laptop Dell XPS 13', 'Ultrabook con procesador Intel Core i7, 16 GB RAM y 512 GB SSD.', 1);

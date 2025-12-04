@@ -8,6 +8,14 @@ INSERT INTO categoria (id, nombre) VALUES (5, 'Papelería y Oficina');
 
 ALTER SEQUENCE IF EXISTS categoria_seq RESTART WITH 6;
 
+INSERT INTO tag (id, nombre) VALUES (1, 'Moderno');
+INSERT INTO tag (id, nombre) VALUES (2, 'Divertido');
+INSERT INTO tag (id, nombre) VALUES (3, 'Útil');
+INSERT INTO tag (id, nombre) VALUES (4, 'IA');
+INSERT INTO tag (id, nombre) VALUES (5, 'Productividad');
+
+ALTER SEQUENCE IF EXISTS tag_seq RESTART WITH 6;
+
 WITH ins0 AS (
     INSERT INTO producto (id, precio, nombre_producto, categoria_id)
     VALUES (nextval('producto_seq'), 599.99, 'Smartphone Samsung Galaxy S23', 1)
@@ -167,6 +175,17 @@ WITH ins19 AS (
 )
 INSERT INTO producto_descripcion(id, producto_id, descripcion, marca, modelo, url)
 VALUES (nextval('producto_descripcion_seq'), (SELECT id FROM ins19), 'Libreta de tapa dura ideal para notas y bocetos.', 'Moleskine', 'Classic', 'http://');
+
+-- 2 (o menos) tags aleatorios para cada producto
+INSERT INTO producto_tag
+SELECT id as producto_id, ((id * random() * 1000)::int % 5) + 1 as tag_id
+FROM producto
+UNION
+SELECT id as producto_id, ((id * random() * 1000)::int % 5) + 1 as tag_id
+FROM producto;
+
+
+
 
 
 --INSERT INTO producto (id, precio, nombre_producto, descripcion, categoria_id) VALUES (nextval('producto_seq'), 1299.99, 'Laptop Dell XPS 13', 'Ultrabook con procesador Intel Core i7, 16 GB RAM y 512 GB SSD.', 1);

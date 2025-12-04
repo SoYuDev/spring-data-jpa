@@ -1,7 +1,8 @@
 package com.luis.springdata;
 
+import com.luis.springdata.model.Producto;
+import com.luis.springdata.repository.ProductoRepository;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,5 +26,12 @@ public class MainDeMentira {
 
         productoRepository.save(p);
         System.out.println("Product saved");
+
+        // Devuelve un Optional<Producto> que nos permite tener programación funcional
+        productoRepository.findById(2L)
+                .ifPresentOrElse(
+                        System.out::println,
+                        () -> System.out.println("No existe producto con id 2")
+                );
     }
 }

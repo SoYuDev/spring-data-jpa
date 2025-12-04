@@ -1,4 +1,4 @@
-package com.luis.springdata;
+package com.luis.springdata.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,6 +33,12 @@ public class Producto {
 
     @Column(name = "precio")
     private double precioVenta;
+
+    // El producto va a tener una categoría y categoría va a tener varios productos
+    @ManyToOne()
+    // Usamos JoinColumn para establecer el nombre que deseamos a la FK que se genera.
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_producto_categoria"))
+    private Categoria categoria;
 
     // Cuando ejecutamos Hibernate se encarga de hacer la siguiente sentencia SQL que puede verse por consola:
     // Hibernate: create table producto (precio float(53),

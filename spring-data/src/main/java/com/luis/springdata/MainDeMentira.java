@@ -2,7 +2,9 @@ package com.luis.springdata;
 
 import com.luis.springdata.model.Categoria;
 import com.luis.springdata.model.Producto;
+import com.luis.springdata.model.ProductoDescripcion;
 import com.luis.springdata.repository.CategoriaRepository;
+import com.luis.springdata.repository.ProductoDescripcionRepository;
 import com.luis.springdata.repository.ProductoRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
@@ -14,10 +16,15 @@ public class MainDeMentira {
 
     private final ProductoRepository productoRepository;
     private final CategoriaRepository categoriaRepository;
+    private final ProductoDescripcionRepository productoDescripcionRepository;
 
-    public MainDeMentira(ProductoRepository productoRepository, CategoriaRepository categoriaRepository) {
+    public MainDeMentira(ProductoRepository productoRepository,
+                         CategoriaRepository categoriaRepository,
+                         ProductoDescripcionRepository productoDescripcionRepository
+    ) {
         this.productoRepository = productoRepository;
         this.categoriaRepository = categoriaRepository;
+        this.productoDescripcionRepository = productoDescripcionRepository;
     }
 
     // Se ejecuta cuando se instancia el Bean
@@ -26,7 +33,6 @@ public class MainDeMentira {
         System.out.println("Iniciando el proceso");
         Producto p = Producto.builder()
                 .nombreProducto("Ratoncito")
-                .descripcion("Un ratoncito muy pequeño...")
                 .precioVenta(741)
                 .build();
 
@@ -49,7 +55,6 @@ public class MainDeMentira {
 
         Producto coche = Producto.builder()
                 .nombreProducto("Audi")
-                .descripcion("Un coche muy rápido")
                 .precioVenta(100000)
                 .build();
 
@@ -72,5 +77,17 @@ public class MainDeMentira {
                 },
                 () -> System.out.println("No existe una categoria con ID 1")
         );
+
+        ProductoDescripcion descripcion = ProductoDescripcion
+                .builder()
+                .descripcion("Se trata de un producto de nuestro catálogo")
+                .marca("marca")
+                .modelo("modelo")
+                .url("http://")
+                .build();
+
+        p.setProductoDescripcion(descripcion);
+
+        productoDescripcionRepository.save(descripcion);
     }
 }

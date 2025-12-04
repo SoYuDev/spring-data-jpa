@@ -28,8 +28,11 @@ public class Producto {
     private String nombreProducto;
 
     // El tipo TEXT no tienen límite de caracteres
-    @Column(columnDefinition = "TEXT")
-    private String descripcion;
+//    @Column(columnDefinition = "TEXT")
+//    private String descripcion;
+
+    @OneToOne(mappedBy = "producto", fetch = FetchType.EAGER)
+    private ProductoDescripcion descripcion;
 
     @Column(name = "precio")
     private double precioVenta;
@@ -40,9 +43,17 @@ public class Producto {
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_producto_categoria"))
     private Categoria categoria;
 
-    // Cuando ejecutamos Hibernate se encarga de hacer la siguiente sentencia SQL que puede verse por consola:
-    // Hibernate: create table producto (precio float(53),
-    // id bigint not null, nombre_producto varchar(512), descripcion TEXT, primary key (id))
+    // Helpers One to One
+    public void setProductoDescripcion(ProductoDescripcion descripcion) {
+        this.setDescripcion(descripcion);
+        descripcion.setProducto(this);
+    }
+
+    public void removeProductoDescripcion(ProductoDescripcion descripcion) {
+        this.setDescripcion(null);
+        descripcion.setProducto(null);
+    }
+
 
     @Override
     public final boolean equals(Object o) {
@@ -59,4 +70,5 @@ public class Producto {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
 }

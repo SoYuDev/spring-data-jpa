@@ -3,7 +3,7 @@ package com.luis.springdata.asociaciones;
 import com.luis.springdata.asociaciones.model.*;
 import com.luis.springdata.asociaciones.repository.CategoriaRepository;
 import com.luis.springdata.asociaciones.repository.ProductoDescripcionRepository;
-import com.luis.springdata.asociaciones.repository.ProductoRepository;
+import com.luis.springdata.asociaciones.repository.ProductoRepository2;
 import com.luis.springdata.asociaciones.repository.TagRepository;
 import org.springframework.stereotype.Component;
 
@@ -13,19 +13,19 @@ import java.util.stream.Collectors;
 @Component
 public class MainDeMentira {
 
-    private final ProductoRepository productoRepository;
+    private final ProductoRepository2 productoRepository2;
     private final CategoriaRepository categoriaRepository;
     private final ProductoDescripcionRepository productoDescripcionRepository;
     private final TagRepository tagRepository;
     private final CategoriaService categoriaService;
 
-    public MainDeMentira(ProductoRepository productoRepository,
+    public MainDeMentira(ProductoRepository2 productoRepository2,
                          CategoriaRepository categoriaRepository,
                          ProductoDescripcionRepository productoDescripcionRepository,
                          TagRepository tagRepository,
                          CategoriaService categoriaService
     ) {
-        this.productoRepository = productoRepository;
+        this.productoRepository2 = productoRepository2;
         this.categoriaRepository = categoriaRepository;
         this.productoDescripcionRepository = productoDescripcionRepository;
         this.tagRepository = tagRepository;
@@ -42,7 +42,7 @@ public class MainDeMentira {
                 .precioVenta(123.45)
                 .build();
 
-        productoRepository.save(p);
+        productoRepository2.save(p);
 
 
         ProductoDescripcion descripcion = ProductoDescripcion
@@ -65,7 +65,7 @@ public class MainDeMentira {
         p.addTag(tag1);
         p.addTag(tag2);
 
-        productoRepository.save(p);
+        productoRepository2.save(p);
 
 
         /*productoRepository.findById(1L).ifPresentOrElse(
@@ -88,7 +88,7 @@ public class MainDeMentira {
 
         c.addProducto(coche);
 
-        productoRepository.save(coche);
+        productoRepository2.save(coche);
 
 
         System.out.println("N+1 Consultas");

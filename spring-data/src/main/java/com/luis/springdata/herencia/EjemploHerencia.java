@@ -13,7 +13,7 @@ public class EjemploHerencia {
 
     private final UsuarioRepository usuarioRepository;
 
-    @PostConstruct
+    //@PostConstruct
     public void run() {
 
         Usuario usuario = Usuario.builder()

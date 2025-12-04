@@ -10,7 +10,7 @@ public class EjemploConsultas {
 
     private final ProductoRepository productoRepository;
 
-    @PostConstruct
+    //@PostConstruct
     public void run() {
 
         System.out.println("=== 10 productos más caros ===");

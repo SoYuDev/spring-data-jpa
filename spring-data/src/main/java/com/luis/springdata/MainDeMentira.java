@@ -1,9 +1,6 @@
 package com.luis.springdata;
 
-import com.luis.springdata.model.Categoria;
-import com.luis.springdata.model.Producto;
-import com.luis.springdata.model.ProductoDescripcion;
-import com.luis.springdata.model.Tag;
+import com.luis.springdata.model.*;
 import com.luis.springdata.repository.CategoriaRepository;
 import com.luis.springdata.repository.ProductoDescripcionRepository;
 import com.luis.springdata.repository.ProductoRepository;
@@ -21,16 +18,19 @@ public class MainDeMentira {
     private final CategoriaRepository categoriaRepository;
     private final ProductoDescripcionRepository productoDescripcionRepository;
     private final TagRepository tagRepository;
+    private final CategoriaService categoriaService;
 
     public MainDeMentira(ProductoRepository productoRepository,
                          CategoriaRepository categoriaRepository,
                          ProductoDescripcionRepository productoDescripcionRepository,
-                         TagRepository tagRepository
+                         TagRepository tagRepository,
+                         CategoriaService categoriaService
     ) {
         this.productoRepository = productoRepository;
         this.categoriaRepository = categoriaRepository;
         this.productoDescripcionRepository = productoDescripcionRepository;
         this.tagRepository = tagRepository;
+        this.categoriaService = categoriaService;
     }
 
     // Se ejecuta cuando se instancia el Bean
@@ -69,10 +69,10 @@ public class MainDeMentira {
         productoRepository.save(p);
 
 
-        productoRepository.findById(1L).ifPresentOrElse(
+        /*productoRepository.findById(1L).ifPresentOrElse(
                 System.out::println,
                 () -> System.out.println("No existe un producto con ID 1")
-        );
+        );*/
 
         Categoria c = Categoria.builder()
                 .nombre("Coches")
@@ -91,7 +91,11 @@ public class MainDeMentira {
 
         productoRepository.save(coche);
 
-        categoriaRepository.findById(1L).ifPresentOrElse(
+
+        System.out.println("N+1 Consultas");
+        System.out.println("==============");
+        //categoriaRepository.findById(1L).ifPresentOrElse(
+        categoriaService.cargarCategoria(1L).ifPresentOrElse(
                 categoria -> {
                     System.out.println("ID:%d - %s: %s".formatted(
                             categoria.getId(),
@@ -103,9 +107,22 @@ public class MainDeMentira {
                 () -> System.out.println("No existe una categoria con ID 1")
         );
 
-        productoRepository.findAll()
-                .forEach(System.out::println);
+        System.out.println("JOIN FETCH");
+        categoriaRepository.findCategoriaByIdWithProductos(1L).ifPresentOrElse(
+                categoria -> {
+                    System.out.println("ID:%d - %s: %s".formatted(
+                            categoria.getId(),
+                            categoria.getNombre(),
+                            categoria.getProductos().stream().map(Producto::getNombreProducto).collect(Collectors.joining(", "))
+                    ));
 
+                },
+                () -> System.out.println("No existe una categoria con ID 1")
+        );
+
+        /*productoRepository.findAll()
+                .forEach(System.out::println);
+        */
 
     }
 }

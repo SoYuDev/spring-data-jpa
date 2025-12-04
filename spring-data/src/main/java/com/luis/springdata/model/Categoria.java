@@ -30,7 +30,7 @@ public class Categoria {
     // @ManyToOne en Producto y @OneToMany en Categoria
     // El valor que debe de tener mappedBy es el nombre del atributo que tenemos en Producto para la asociación
     //EAGER carga todas las entidades relacionadas, cargará los productos de la categoria seleccionada
-    @OneToMany(mappedBy = "categoria", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "categoria"/*, fetch = FetchType.EAGER*/)
     @Builder.Default // Como tenemos @Builder en la Clase, Builder.Default hace que si instanciamos
     // Un objeto con el metodo Builder sin especificar .productos se genere por default.
     @ToString.Exclude // Excluye este atributo del metodo toString() MUY IMPORTANTE PARA EVITAR RECURSIÓN INFINITA

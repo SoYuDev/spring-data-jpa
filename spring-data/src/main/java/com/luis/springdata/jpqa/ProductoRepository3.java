@@ -24,4 +24,18 @@ public interface ProductoRepository3 extends JpaRepository<Producto, Long> {
             ) from Producto p          
             """)
     List<GetProductoDto> informacionBasica();
+
+    // El fetch es importante ponerlo si en las entidades tenemos .LAZY que es lo recomendable por los expertos
+    @Query("""
+            select p 
+            from Producto p join fetch p.categoria c
+            where c.id = 1           
+            """)
+    List<Producto> productosDeCategoria1();
+
+    @Query("""
+            select p
+            from Producto p left join fetch p.categoria
+            """)
+    List<Producto> productosConCategoriaSiTienen();
 }

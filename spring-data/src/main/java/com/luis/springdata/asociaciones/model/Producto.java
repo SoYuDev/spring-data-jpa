@@ -40,12 +40,12 @@ public class Producto {
     private double precioVenta;
 
     // El producto va a tener una categoría y categoría va a tener varios productos
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     // Usamos JoinColumn para establecer el nombre que deseamos a la FK que se genera.
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_producto_categoria"))
     private Categoria categoria;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     // Generamos una tabla que conecta los productos con las etiquetas
     @JoinTable(
             name = "producto_tag",

@@ -15,7 +15,7 @@ public class EjemploConsultas2 {
 
     private final ProductoRepository3 productoRepository3;
 
-    @PostConstruct
+    //@PostConstruct
     public void run() {
 
         System.out.println("=== Obtener todos los productos ===");

@@ -1,6 +1,6 @@
-package com.luis.springdata.repository;
+package com.luis.springdata.asociaciones.repository;
 
-import com.luis.springdata.model.Categoria;
+import com.luis.springdata.asociaciones.model.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

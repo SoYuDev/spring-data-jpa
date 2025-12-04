@@ -1,14 +1,11 @@
-package com.luis.springdata.model;
+package com.luis.springdata.asociaciones.model;
 
-import com.luis.springdata.model.Categoria;
-import com.luis.springdata.model.Producto;
-import com.luis.springdata.repository.CategoriaRepository;
+import com.luis.springdata.asociaciones.repository.CategoriaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

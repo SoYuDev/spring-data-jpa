@@ -1,10 +1,12 @@
-package com.luis.springdata;
+package com.luis.springdata.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,15 +30,59 @@ public class Producto {
     private String nombreProducto;
 
     // El tipo TEXT no tienen límite de caracteres
-    @Column(columnDefinition = "TEXT")
-    private String descripcion;
+//    @Column(columnDefinition = "TEXT")
+//    private String descripcion;
+
+    @OneToOne(mappedBy = "producto", fetch = FetchType.EAGER)
+    private ProductoDescripcion descripcion;
 
     @Column(name = "precio")
     private double precioVenta;
 
-    // Cuando ejecutamos Hibernate se encarga de hacer la siguiente sentencia SQL que puede verse por consola:
-    // Hibernate: create table producto (precio float(53),
-    // id bigint not null, nombre_producto varchar(512), descripcion TEXT, primary key (id))
+    // El producto va a tener una categoría y categoría va a tener varios productos
+    @ManyToOne()
+    // Usamos JoinColumn para establecer el nombre que deseamos a la FK que se genera.
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_producto_categoria"))
+    private Categoria categoria;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    // Generamos una tabla que conecta los productos con las etiquetas
+    @JoinTable(
+            name = "producto_tag",
+            joinColumns = @JoinColumn(
+                    name = "producto_id",
+                    foreignKey = @ForeignKey(name = "fk_producto_tag_producto")
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "tag_id",
+                    foreignKey = @ForeignKey(name = "fk_producto_tag_tag")
+            )
+    )
+    @Builder.Default
+    private Set<Tag> tags = new HashSet<>();
+
+    // Helpers One to One
+    public void setProductoDescripcion(ProductoDescripcion descripcion) {
+        this.setDescripcion(descripcion);
+        descripcion.setProducto(this);
+    }
+
+    public void removeProductoDescripcion(ProductoDescripcion descripcion) {
+        this.setDescripcion(null);
+        descripcion.setProducto(null);
+    }
+
+    // Helpers Tag
+    public void addTag(Tag tag) {
+        tags.add(tag);
+        tag.getProductos().add(this);
+    }
+
+    public void removeTag(Tag tag) {
+        tags.remove(tag);
+        tag.getProductos().remove(this);
+    }
+
 
     @Override
     public final boolean equals(Object o) {
@@ -53,4 +99,5 @@ public class Producto {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
 }

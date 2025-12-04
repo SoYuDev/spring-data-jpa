@@ -34,7 +34,7 @@ public class MainDeMentira {
     }
 
     // Se ejecuta cuando se instancia el Bean
-    @PostConstruct
+    //@PostConstruct
     public void run() {
 
         Producto p = Producto.builder()

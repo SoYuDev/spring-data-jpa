@@ -1,11 +1,10 @@
-package com.luis.springdata;
+package com.luis.springdata.asociaciones;
 
-import com.luis.springdata.model.*;
-import com.luis.springdata.repository.CategoriaRepository;
-import com.luis.springdata.repository.ProductoDescripcionRepository;
-import com.luis.springdata.repository.ProductoRepository;
-import com.luis.springdata.repository.TagRepository;
-import jakarta.annotation.PostConstruct;
+import com.luis.springdata.asociaciones.model.*;
+import com.luis.springdata.asociaciones.repository.CategoriaRepository;
+import com.luis.springdata.asociaciones.repository.ProductoDescripcionRepository;
+import com.luis.springdata.asociaciones.repository.ProductoRepository;
+import com.luis.springdata.asociaciones.repository.TagRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

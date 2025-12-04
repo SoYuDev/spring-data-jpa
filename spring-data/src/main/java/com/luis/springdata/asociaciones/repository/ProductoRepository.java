@@ -1,6 +1,6 @@
-package com.luis.springdata.repository;
+package com.luis.springdata.asociaciones.repository;
 
-import com.luis.springdata.model.Producto;
+import com.luis.springdata.asociaciones.model.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductoRepository extends JpaRepository<Producto, Long> {

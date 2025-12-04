@@ -1,10 +1,10 @@
-package com.luis.springdata;
+package com.luis.springdata.asociaciones;
 
-import com.luis.springdata.model.LineaPedido;
-import com.luis.springdata.model.Pedido;
-import com.luis.springdata.model.Producto;
-import com.luis.springdata.repository.PedidoRepository;
-import com.luis.springdata.repository.ProductoRepository;
+import com.luis.springdata.asociaciones.model.LineaPedido;
+import com.luis.springdata.asociaciones.model.Pedido;
+import com.luis.springdata.asociaciones.model.Producto;
+import com.luis.springdata.asociaciones.repository.PedidoRepository;
+import com.luis.springdata.asociaciones.repository.ProductoRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

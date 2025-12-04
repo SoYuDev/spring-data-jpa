@@ -1,6 +1,5 @@
 package com.luis.springdata.querymethods;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -8,22 +7,22 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class EjemploConsultas {
 
-    private final ProductoRepository productoRepository;
+    private final ProductoRepository5 productoRepository5;
 
     //@PostConstruct
     public void run() {
 
         System.out.println("=== 10 productos más caros ===");
-        productoRepository.findTop10ByOrderByPrecioVentaDesc()
+        productoRepository5.findTop10ByOrderByPrecioVentaDesc()
                 .forEach(p -> System.out.println("%s (%.2f€)".formatted(p.getNombreProducto(), p.getPrecioVenta())));
 
 
         System.out.println("=== Cantidad de productos de Electrónica: %d ===".formatted(
-                productoRepository.countByCategoriaNombre("Electrónica")
+                productoRepository5.countByCategoriaNombre("Electrónica")
         ));
 
         System.out.println("=== Producto más barato de la categoría Papelería y Oficina ===");
-        productoRepository.findFirstByCategoriaNombreOrderByPrecioVentaAsc("Papelería y Oficina")
+        productoRepository5.findFirstByCategoriaNombreOrderByPrecioVentaAsc("Papelería y Oficina")
                 .ifPresentOrElse(
                         p -> {
                             System.out.println("%s (%.2f€)".formatted(p.getNombreProducto(), p.getPrecioVenta()));
@@ -33,15 +32,15 @@ public class EjemploConsultas {
                         });
 
         System.out.println("=== Productos que contienen Inalámbrico === ");
-        productoRepository.findByNombreProductoContainsIgnoreCase("Inalámbrico")
+        productoRepository5.findByNombreProductoContainsIgnoreCase("Inalámbrico")
                 .forEach(p -> System.out.println("%s (%.2f€)".formatted(p.getNombreProducto(), p.getPrecioVenta())));
 
         System.out.println("=== Productos con precio venta [20,50]€ ===");
-        productoRepository.findByPrecioVentaBetween(20.0, 50.0)
+        productoRepository5.findByPrecioVentaBetween(20.0, 50.0)
                 .forEach(p -> System.out.println("%s (%.2f€)".formatted(p.getNombreProducto(), p.getPrecioVenta())));
 
         System.out.println("=== Productos que contienen Inalámbrico con precio venta [20,50]€ ===");
-        productoRepository.findByNombreProductoContainsIgnoreCaseAndPrecioVentaBetween("Inalámbrico", 20.0, 50.0)
+        productoRepository5.findByNombreProductoContainsIgnoreCaseAndPrecioVentaBetween("Inalámbrico", 20.0, 50.0)
                 .forEach(p -> System.out.println("%s (%.2f€)".formatted(p.getNombreProducto(), p.getPrecioVenta())));
 
     }

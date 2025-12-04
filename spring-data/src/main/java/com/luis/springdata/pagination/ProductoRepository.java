@@ -1,21 +1,19 @@
 package com.luis.springdata.pagination;
 
-import com.luis.springdata.asociaciones.model.Categoria;
 import com.luis.springdata.asociaciones.model.Producto;
 import com.luis.springdata.jpqa.GetProductoDto;
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductoRepository5 extends JpaRepository<Producto, Long> {
+public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     // Consultas con @Query
 
@@ -105,6 +103,21 @@ public interface ProductoRepository5 extends JpaRepository<Producto, Long> {
 
     // Limit
     List<Producto> findByNombreProductoContainsIgnoreCase(String nombre, Limit limit);
+
+    // Sort
+
+    @Query("""
+            select p
+            from Producto p left join fetch p.categoria
+            """)
+    List<Producto> productosConCategoriaSiTienen(Sort sort, Limit limit);
+
+
+    @Query("""
+            select p
+            from Producto p left join fetch p.categoria
+            """)
+    Page<Producto> productosConCategoriaSiTienen(Pageable pageable);
 
 
 }

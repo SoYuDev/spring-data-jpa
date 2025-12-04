@@ -4,10 +4,7 @@ import com.luis.springdata.asociaciones.model.Producto;
 import com.luis.springdata.asociaciones.model.Tag;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Limit;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,29 +14,29 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EjemplosPagingAndSorting {
 
-    private final ProductoRepository5 productoRepository5;
+    private final ProductoRepository productoRepository;
 
 
     @PostConstruct
     public void run() {
 
         // 1ª Página de 5 productos
-        Pageable firstReq = PageRequest.of(0,5);
-        Page<Producto> primera = productoRepository5.findAll(firstReq);
+        Pageable firstReq = PageRequest.of(0, 5);
+        Page<Producto> primera = productoRepository.findAll(firstReq);
         System.out.println("=== Primera página de resultados (Tam. pág. 5 elementos) ===");
         primera.getContent()
                 .forEach(p -> System.out.println("%s (%.2f€)".formatted(p.getNombreProducto(), p.getPrecioVenta())));
 
         // 2ª Página (siguiente) de 5 productos
         System.out.println("=== Siguiente página de resultados (Tam. pág. 5 elementos) ===");
-        productoRepository5.findAll(firstReq.next())
+        productoRepository.findAll(firstReq.next())
                 .forEach(p -> System.out.println("%s (%.2f€)".formatted(p.getNombreProducto(), p.getPrecioVenta())));
 
 
         // Consulta derivada con paginación
-        Page<Producto> porNombre = productoRepository5.findByNombreProductoContainsIgnoreCase(
+        Page<Producto> porNombre = productoRepository.findByNombreProductoContainsIgnoreCase(
                 "n",
-                PageRequest.of(0,3)
+                PageRequest.of(0, 3)
         );
 
         System.out.println("=== Primera página de productos que contienen n ===");
@@ -55,8 +52,8 @@ public class EjemplosPagingAndSorting {
 
         // Consulta con @Query con paginación
         System.out.println("=== 3ª página de los productos que contienen el tag 'IA' ===");
-        Pageable terceraIA = PageRequest.of(2,4);
-        productoRepository5.productosConTags(List.of("IA"), terceraIA)
+        Pageable terceraIA = PageRequest.of(2, 4);
+        productoRepository.productosConTags(List.of("IA"), terceraIA)
                 .getContent()
                 .forEach(p -> System.out.println("%s (%.2f€) (%s)".formatted(
                         p.getNombreProducto(),
@@ -66,9 +63,41 @@ public class EjemplosPagingAndSorting {
 
         // Consulta derivada con Limit
         System.out.println("=== 5 primeros resultados de productos que contienen n ===");
-        productoRepository5.findByNombreProductoContainsIgnoreCase("n", Limit.of(5))
+        productoRepository.findByNombreProductoContainsIgnoreCase("n", Limit.of(5))
                 .forEach(p -> System.out.println("%s (%.2f€)".formatted(p.getNombreProducto(), p.getPrecioVenta())));
 
+
+        // Sort
+        System.out.println("=== Productos ordenados por nombre descendentemente ===");
+        productoRepository.findAll(Sort.by("nombreProducto").descending())
+                .forEach(p -> System.out.println("%s (%.2f€)".formatted(p.getNombreProducto(), p.getPrecioVenta())));
+
+        // Sort y Limit
+        System.out.println("=== 15 primeros productos ordenados por categoría ascendentemente y precio descendentemente ===");
+        productoRepository.productosConCategoriaSiTienen(
+                        Sort.by("categoria.nombre").ascending()
+                                .and(Sort.by("precioVenta").descending()),
+                        Limit.of(15))
+                .forEach(p -> System.out.println("%s (%.2f€) (Categoría %s)"
+                        .formatted(p.getNombreProducto(),
+                                p.getPrecioVenta(),
+                                p.getCategoria() != null ? p.getCategoria().getNombre() : "Sin categoría"
+                        )));
+
+
+        // Pageable y Sort
+        // El objeto de tipo Sort se pasa como 3º argumento de PageRequest.of
+        System.out.println("=== 1ª página de productos ordenados por categoría ascendentemente y precio descendentemente ===");
+        productoRepository.productosConCategoriaSiTienen(
+                        PageRequest.of(0, 15,
+                                Sort.by("categoria.nombre").ascending()
+                                        .and(Sort.by("precioVenta").descending())))
+                .getContent()
+                .forEach(p -> System.out.println("%s (%.2f€) (Categoría %s)"
+                        .formatted(p.getNombreProducto(),
+                                p.getPrecioVenta(),
+                                p.getCategoria() != null ? p.getCategoria().getNombre() : "Sin categoría"
+                        )));
     }
 
 }

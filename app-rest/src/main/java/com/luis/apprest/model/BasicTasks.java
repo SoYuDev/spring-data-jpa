@@ -1,0 +1,41 @@
+package com.luis.apprest.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.proxy.HibernateProxy;
+
+import java.util.Objects;
+
+@Getter
+@Setter
+@ToString(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+// Como va a ser una clase de la que heredamos,
+// evita futuros errores a la hora de usar builder con BasicTask
+@SuperBuilder
+@Entity
+public class BasicTasks extends Task {
+
+    // No tiene límite de caracteres
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        BasicTasks that = (BasicTasks) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+}

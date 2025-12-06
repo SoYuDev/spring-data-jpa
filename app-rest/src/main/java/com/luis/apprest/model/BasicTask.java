@@ -17,7 +17,7 @@ import java.util.Objects;
 // evita futuros errores a la hora de usar builder con BasicTask
 @SuperBuilder
 @Entity
-public class BasicTasks extends Task {
+public class BasicTask extends Task {
 
     // No tiene límite de caracteres
     @Column(columnDefinition = "TEXT")
@@ -30,7 +30,7 @@ public class BasicTasks extends Task {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        BasicTasks that = (BasicTasks) o;
+        BasicTask that = (BasicTask) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

@@ -20,7 +20,7 @@ public class TaskTag {
     @GeneratedValue
     private Long id;
 
-    private String nombre;
+    private String name;
 
     @Override
     public final boolean equals(Object o) {

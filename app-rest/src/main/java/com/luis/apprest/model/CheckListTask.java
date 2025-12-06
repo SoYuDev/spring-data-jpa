@@ -68,4 +68,8 @@ public class CheckListTask extends Task {
     public void removeItem(CheckListItem item) {
         items.remove(item);
     }
+
+    public void removeItemById(Long id) {
+        this.items.removeIf(item -> item.getId().equals(id));
+    }
 }
